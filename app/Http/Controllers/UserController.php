@@ -5,8 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
-
-
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -20,6 +19,7 @@ class UserController extends Controller
       $data = Auth::user();
 
       return view('Profile',compact('data'));
+      
     }
 
     /**
@@ -72,9 +72,43 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-    
+    $user=auth()->user();
+
+    $user->update([
+        'name'=>$request->name,
+        'email'=>$request->email,
+    ]);
+
+    return redirect()->route('dashboard')->with('success','Profile successfully updated ');
+    }
+
+    public function UpdatePassword(Request $request){
+
+        $request->validate([
+            'old_password'=>'required|min:6|max:50',
+            'new_password'=>'required|min:6|max:50',
+            'confirm_password'=>'required|same:new_password'
+        ]);
+
+        $current_user=auth()->user();
+   
+        if(Hash::check($request->old_password,$current_user->password)){
+            $current_user->update([
+              'password'=>bcrypt($request->new_password)
+            ]);
+            return redirect()->back()->with('success','Updated successfully');
+        }else{
+            return redirect()->back()->with('error','Old password does not matched.');
+        }
+
+    }
+
+    public function ChangePassword(){
+
+        return view('ChangePass');
+
     }
 
     /**

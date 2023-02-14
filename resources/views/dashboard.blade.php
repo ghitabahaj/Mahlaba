@@ -20,6 +20,8 @@
     </div>
 </div>
 <a href="{{route('Profile')}}">Edit Profile</a>
+<a href="{{route('ChangePass')}}">Change Password</a>
+
 
 <form action="{{ url('product_create') }}" method="POST" enctype="multipart/form-data" class="m-4">
     @csrf

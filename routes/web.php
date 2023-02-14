@@ -25,9 +25,6 @@ use  App\Http\Controllers\PostController;
 // });
 
 
-
-
-
 Route::get('/', function () {
     return view('welcome');
 });
@@ -39,19 +36,15 @@ Route::get('/addItem', function () {
 
 
 Route::get('/profile',[App\Http\Controllers\UserController::class,'index'])->name('Profile');
-
-
+Route::post('/EditChangePass',[App\Http\Controllers\UserController::class,'UpdatePassword'])->name('UpdatePass');
+Route::get('/ChangePass',[App\Http\Controllers\UserController::class,'ChangePassword'])->name('ChangePass');
+Route::put('/profile',[App\Http\Controllers\UserController::class,'update'])->name('UpdateProfile');
 Route::get('editing/{id}', [ProductController::class , 'edit'])->name('edit');
 Route::get('delete/{id}', [ProductController::class , 'destroy'])->name('delete');
-
 Auth::routes();
-
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
 Route::post('/product_create',[App\Http\Controllers\ProductController::class,'addItem']);
 Route::post('/UpdateItem/{id}',[App\Http\Controllers\ProductController::class,'update']);
-
-
 Route::get('/dashboard',[App\Http\Controllers\ProductController::class,'DisplayItems'])->name('dashboard');
 Route::get('/User',[App\Http\Controllers\ProductController::class,'DisplayItems'])->name('User');
 
